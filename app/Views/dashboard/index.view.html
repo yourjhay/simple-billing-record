@@ -1,0 +1,207 @@
+{% extends "layouts/base.view.html" %}
+
+{% block content %}
+<style>
+.header {
+    color:rgb(104, 108, 110);
+    font-size: 80px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+</style>
+    <div class="card mt-5">
+        <div class="card-header">Records</div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-2">
+                  <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <a class="nav-link {% if route('tab') == 'summary' or route('tab') == '' %}active{% endif %}" id="v-pills-summary-tab" data-toggle="pill" href="#v-pills-summary" role="tab" aria-controls="v-pills-summary" aria-selected="true">Bills Summary</a>
+                    <a class="nav-link {% if route('tab') == 'biller' %}active{% endif %}" id="v-pills-biller-tab" data-toggle="pill" href="#v-pills-biller" role="tab" aria-controls="v-pills-biller" aria-selected="false">Biller Management</a>
+                    <a class="nav-link" id="v-pills-encode-tab" data-toggle="pill" href="#v-pills-encode" role="tab" aria-controls="v-pills-encode" aria-selected="false">Encode Bill</a>
+                    <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings" aria-selected="false">Settings</a>
+                  </div>
+                </div>
+                <div class="col-lg-10">
+                  <div class="tab-content" id="v-pills-tabContent">
+                    <div class="tab-pane fade {% if route('tab') == 'summary' or route('tab') == '' %}show active{% endif %}" id="v-pills-summary" role="tabpanel" aria-labelledby="v-pills-summary-tab">
+                        heres your bill summary   
+                       <div class="card">
+                         <div class="card-body">
+                           <div class="row">
+                             <div class="col-lg">
+                              <div class="card">
+                              <div class="card-header">Current Billers</div>
+                                <div class="card-body">
+                                    <table class="table table-small">
+                                      <th>Biller</th>
+                                      <th>Account</th>
+                                      <tbody>
+                                        {% for biller in billers %}
+                                        <tr>
+                                          <td>{{ biller.biller_name }}</td>
+                                          <td>{{ biller.account_number }}</td>
+                                        </tr>
+                                        {% endfor %}   
+                                      </tbody>
+                                    </table>
+                                </div>
+                              </div>
+                             </div>
+                             <div class="col-lg">
+
+                             </div>
+                           </div>
+                         </div>
+                       </div>                  
+                    </div>
+                    <div class="tab-pane fade {% if route('tab') == 'biller' %}show active{% endif %}" id="v-pills-biller" role="tabpanel" aria-labelledby="v-pills-biller-tab">
+                        <div class="card col-8 m-auto">
+                            <div class="card-body">
+                              {% include "includes/message.twig" %}
+                                <form action="/biller/store" method="post">
+                                    <div class="form-group">
+                                      <label for="biller_name">Biller name</label>
+                                      <input type="text" value="{{old.biller_name}}" class="form-control {% if flushable.biller_name %} is-invalid {% endif %}" id="biller_name" name="biller_name" aria-describedby="billerHelp">
+                                        {% if flushable.biller_name %}
+                                            <div class="invalid-feedback"><strong>{{ flushable.biller_name }}!</strong> eg: Convert ICT, Meralco, etc.</div>
+                                        {%else%}
+                                        <small id="billerHelp" class="form-text text-muted">Enter Biller name eg: Convert ICT, Meralco, etc.</small>     
+                                        {% endif %}
+                                      </div>
+                                    <div class="form-group">
+                                      <label for="due">Monthly Due Date:</label>
+                                      <input type="date" class="form-control {% if flushable.due %} is-invalid {% endif %}" id="due" name="due" aria-describedby="billerDueHelp">
+                                      {% if flushable.due %}
+                                        <div class="invalid-feedback"><strong>{{ flushable.due }} </strong>
+                                      {%else%}
+                                      <small id="billerDueHelp" class="form-text text-muted">Enter Biller Monthly due date.</small>
+                                      {%endif%}                                     
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="acc_num">Biller Account Number:</label>
+                                        <input type="text" class="form-control {% if flushable.0.acc_num %} is-invalid {% endif %}" id="acc_num" name="acc_num" aria-describedby="billerAccHelp">
+                                        <small id="billerAccHelp" class="form-text text-muted">Enter Biller Account Number.</small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="acc_name">Account name</label>
+                                        <input type="text" class="form-control {% if flushable.0.acc_name %} is-invalid {% endif %}" id="acc_name" name="acc_name" aria-describedby="nameHelp">
+                                        <small id="nameHelp" class="form-text text-muted">Enter Account name(Owner of the current account).</small>
+                                    </div>
+                                    <button type="submit" class="btn mt-2 btn-block btn-primary">Save Biller</button>
+                                  </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="v-pills-encode" role="tabpanel" aria-labelledby="v-pills-encode-tab">
+                      <div class="card">
+                        <select id="biller_select" class="form-control">
+                          <option value="0">Select Biller</option>
+                          {% for biller in billers %}
+                            <option value="{{biller.id}}">{{biller.biller_name}}</option>
+                          {% endfor %}
+                        </select>
+                        <div class="card-body" id="pill-encode-body">
+                          ds
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+                      <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                          <a class="nav-link active" id="columns-tab" data-toggle="tab" href="#columns" role="tab" aria-controls="columns" aria-selected="true">Columns</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                          <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Profile</a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                          <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contact</a>
+                        </li>
+                      </ul>
+                      <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="columns" role="tabpanel" aria-labelledby="columns-tab">
+                            <div class="card">
+                              <div class="card-body">
+                                <select id="biller_select_2" class="form-control mt-2">
+                                  <option value="0">Select Biller</option>
+                                  {% for biller in billers %}
+                                    <option value="{{biller.id}}">{{biller.biller_name}}</option>
+                                  {% endfor %}
+                                  <option value="all">All Columns</option>
+                                </select>
+                                <div class="input-group mb-3 mt-2">
+                                  <div class="input-group-prepend">
+                                    <span class="input-group-text">For</span>
+                                    <span class="input-group-text" id="for_biller_span">Biller</span>
+                                  </div>
+                                  <input type="text" id="new_col" class="form-control" placeholder="Column Name" aria-label="new column name" aria-describedby="basic-addon2">
+                                  <select id="col_datatype" class="form-control">                                                 
+                                    <option value="text">TEXT</option>
+                                    <option value="date">DATE</option>
+                                    <option value="number">NUMBER</option>
+                                    <option value="select">OPTION(selectbox)</option>
+                                    <option value="file(pdf)">File(pdf)</option>
+                                    <option value="file(image)">File(images)</option>
+                                  </select>
+                                  <div class="input-group-append">
+                                    <button class="btn btn-outline-primary" id="new_col_btn" type="button" disabled>Add new column</button>
+                                  </div>
+                                </div>
+                                <table class="mt-3 table table-sm">
+                                  <th>id</th>
+                                  <th>Column</th>
+                                  <th>Datatype</th>
+                                  <th>Status</th>
+                                  <tbody id="7713">
+                                  
+                                  </tbody>
+                                </table>
+                                
+                              </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
+                        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+ $('#biller_select').on('change', function() {
+  var biller_id = this.value;
+  $('#pill-encode-body').load('/encode/show/'+biller_id);
+});
+$('#biller_select_2').on('change', function() {
+  var biller_id = this.value;
+  $('#7713').load('/encode/showcolumn/'+biller_id);
+  $('#for_biller_span').text($("#biller_select_2 option:selected").text());
+  if(biller_id > 0) {
+    $('#new_col_btn').removeAttr("disabled");
+  } else {
+    $('#new_col_btn').attr("disabled", true);
+  }
+});
+$('#new_col_btn').on('click', function(){
+  var new_col = $('#new_col').val();
+  var col_for = $("#biller_select_2").val();  
+  var col_datatype = $("#col_datatype").val();  
+  $.ajax({
+    method: 'post',
+    url: '/encode/column/store',
+    data: {col_name: new_col, new_col_for:col_for, col_dtype: col_datatype},
+    success: function(e){
+      alert('success');
+      $('#7713').load('/encode/showcolumn/'+col_for);
+    }
+  });
+    
+
+});
+</script>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% for col in cols %}
+    <tr>
+        <td>{{col.column_for}}</td>
+        <td>{{col.column_name}}</td>
+        <td>{{col.datatype}}</td>
+        <td><input type="checkbox" {% if col.column_status == true %} checked {%endif%}></td>
+        <td></td>
+    </tr>
+    {% else %}
+    <tr>
+        <td colspan="2"><div class="alert alert-warning">No Colums Found</div></td>
+    </tr>
+{% endfor %}

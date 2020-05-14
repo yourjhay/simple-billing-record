@@ -1,0 +1,5 @@
+{% if flushable.success %}
+    <div class="alert alert-success"> {{ flushable.success }}</div>
+{% elseif flushable.error %}
+    <div class="alert alert-danger"> {{ flushable.error }}</div>
+{% endif %}

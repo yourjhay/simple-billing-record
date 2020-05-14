@@ -24,9 +24,27 @@
             <li class="nav-item active">
               <a class="nav-link" href="/">Home</a>
             </li>
+          
+            {% if user is null %}
+              <li class="nav-item">
+                <a class="nav-link" href="/auth/index">Login</a>
+              </li>
+            
+              <li class="nav-item">
+                  <a class="nav-link" href="/auth/signup">Signup</a>
+              </li>
+            {% else %}
             <li class="nav-item">
-                <a class="nav-link" target="_blank" href="https://github.com/jhayann/simple-php">Documentation</a>
+              <a class="nav-link" href="/dashboard/index">Dashboard</a>
             </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Welcome <strong>{{ user.name }}!</strong></a>
+              </li>
+            
+              <li class="nav-item">
+                  <a class="nav-link" href="/auth/logout">Logout</a>
+              </li>
+            {% endif %}
           </ul>
         </div>
       </nav>
@@ -39,5 +57,8 @@
   <script src="/src/js/jquery.min.js"></script>
   <script src="/src/js/popper.min.js"></script>
   <script src="/src/js/bootstrap.min.js"></script>
+  {% block scripts %}
+
+  {% endblock %}
 </body>
 </html>

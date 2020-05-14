@@ -21,7 +21,8 @@ class FunctionExtension extends AbstractExtension
              * new TwigFunction($function_name_to_be_called_in_template, [$callable, method_name])
              */
             new TwigFunction('phpinfo', [$this,'phpinfo']),        
-            
+            new TwigFunction('route',[$this, 'route']),
+            new TwigFunction('json_decode',[$this, 'json_decode']),
         ];
     }
     
@@ -32,6 +33,29 @@ class FunctionExtension extends AbstractExtension
     public function phpinfo()
     {
         return phpinfo();
+    }
+
+    public function route($var)
+    {
+        $params = \Simple\Routing\Router::getParams();
+        if($var=='full') {
+            $r='/';
+            foreach($params as $p){
+                $r.=$p.'/';
+            }
+            return substr($r,0,-1);
+        }
+        return isset($params[$var]) ? $params[$var] : null ;
+    }
+
+    public function json_decode($var)
+    {
+        return json_decode($var, true);
+    }
+
+    public function dd($var)
+    {
+        return dd($var);
     }
 
 }

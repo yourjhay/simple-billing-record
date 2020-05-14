@@ -14,7 +14,8 @@
     ],
     "require": {
         "simplyphp/framework": "1.2.*",
-        "php": ">=7.1"
+        "php": ">=7.1",
+        "filp/whoops": "^2.7"
     },
     "autoload": {
         "psr-4": {

@@ -1,0 +1,71 @@
+<div class="card">
+    <div class="card-header">Encode form</div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-4">
+          <div class="card">                   
+            <div class="card-body">
+              <form method="post" action="/encode/storeBill">
+                <input type="hidden" id="biller_name" name="biller_name" value="{{biller}}">
+                {% for col in cols %}
+                    {% if col.datatype == 'text' %}
+                      <div class="form-group">
+                        <label for="{{col.column_name}}">{{col.column_name}}:</label>
+                        <input type="{{col.datatype}}" class="form-control form-control-sm" id="{{col.column_name}}" name="{{col.column_name}}" aria-describedby="emailHelp">
+                        <small id="emailHelp" class="form-text text-muted">{{col.coloumn_description}}</small>
+                      </div>
+                      {% elseif col.datatype == 'number' %}
+                      <div class="form-group">
+                        <label for="{{col.column_name}}">{{col.column_name}}:</label>
+                        <input type="{{col.datatype}}" class="form-control form-control-sm" id="{{col.column_name}}" name="{{col.column_name}}" aria-describedby="emailHelp">
+                        <small id="emailHelp" class="form-text text-muted">{{col.coloumn_description}}</small>
+                      </div>
+                      {% elseif col.datatype == 'date' %}
+                      <div class="form-group">
+                        <label for="{{col.column_name}}">{{col.column_name}}:</label>
+                        <input type="{{col.datatype}}" class="form-control form-control-sm" id="{{col.column_name}}" name="{{col.column_name}}" aria-describedby="emailHelp">
+                        <small id="emailHelp" class="form-text text-muted">{{col.coloumn_description}}</small>
+                      </div>
+                      {% elseif col.datatype == 'file(pdf)' %}                      
+                      <div class="custom-file mt-2">
+                        <label for="{{col.column_name}}">{{col.column_name}}:</label>
+                        <input type="file" class="custom-file-input" id="customFile">
+                        <label class="custom-file-label" for="customFile">Choose file</label>
+                      </div>                     
+                    {% endif %}
+                  {% endfor %}
+                <button type="submit" class="btn btn-primary mt-2 btn-block">SAVE</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-8">
+          <div class="table-responsive text-nowrap">
+            <table class="table table-sm table-stripe">
+              {% for col in cols %}
+                <th>{{col.column_name}}</th>
+              {% endfor %}
+              <tbody>
+             
+                {% for bill in bills%}
+                {% set datas = json_decode(bill.data)%}
+                  <tr>
+                    {% for key, value in datas%}
+                    {% if not loop.first %}
+                      <td>                        
+                        {{ value }}
+                      </td>                    
+                    {% endif %}
+                     
+                    {%endfor%}
+                  </tr>
+                
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

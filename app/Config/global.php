@@ -2,8 +2,8 @@
 /**
  * Application Configuration Settings
  */
-define('APP_NAME','Simply PHP',true);
-define('APP_DESCRIPTION','The "Simply-PHP" Framework',true);
+define('APP_NAME','Billing Record System',true);
+define('APP_DESCRIPTION','Simple Billing Record System',true);
 define('BASEURL','',true);
 define('APP_KEY', '');
 
@@ -34,4 +34,4 @@ define('DBENGINE','mysql');
 define('DBSERVER', 'localhost',true);
 define('DBUSER', 'root', true);
 define('DBPASS', '', true);
-define('DBNAME','simply', true);
+define('DBNAME','billing-record-db', true);
